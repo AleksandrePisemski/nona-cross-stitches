@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-stitching-linen: #F9F6F0;
+  --color-stitching-floss: #EAE4D9;
+  --color-stitching-wood: #C8B199;
+  --color-stitching-graphite: #2D2A26;
+  --color-stitching-rust: #C05C46;
+  --color-stitching-sage: #8EA89D;
+  --color-stitching-rose: #D8A47F;
+  --color-stitching-navy: #2E4057;
+  --color-stitching-gold: #E3B448;
+  --color-stitching-success: #5B8266;
+  
+
+  --color-page: var(--color-stitching-linen);
+  --color-accent: var(--color-stitching-rust);
+  --color-PrimaryText: var(--color-stitching-graphite);
+  --font-header: 'Syne', sans-serif;
+
+
+}

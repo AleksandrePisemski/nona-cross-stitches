@@ -1,15 +1,15 @@
 import NavBar from '../../components/home/NavBar'
 import HeroSection from './HeroSection'
-
+import PageWrapper from '../../components/pageWrapper'
 
 
 function HomePage() {
   return (
-    <div>
+    <PageWrapper>
         <NavBar/>
         <HeroSection/>
       
-    </div>
+    </PageWrapper>
   );
 }
 
