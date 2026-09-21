@@ -83,7 +83,7 @@ function MobileSearchBar({ searchIsOpen }) {
 function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag }) {
     return (
         <div
-            className={`fixed top-0 right-0 w-screen h-screen bg-gray-800/80 backdrop-blur-xs z-51 flex flex-col text-3xl p-6 justify-center items-center gap-10 transition-all duration-700 ease-in-out ${shoppingBagIsOpen
+            className={`md:w-[30vw] fixed top-0 right-0 w-screen h-screen bg-gray-800/80 backdrop-blur-xs z-51 flex flex-col text-3xl p-6 justify-center items-center gap-10 transition-all duration-700 ease-in-out ${shoppingBagIsOpen
                     ? "translate-x-0 opacity-100 pointer-events-auto"
                     : "translate-x-full opacity-0 pointer-events-none"
                 }`}
@@ -122,7 +122,7 @@ function NavBar() {
         }`;
 
     return (
-        <nav className="navbar flex items-center justify-between p-4 pl-0 text-white h-16 fixed inset-0 w-full z-50 border-white border-b">
+        <nav className="navbar flex items-center justify-between p-4 pl-0 text-white h-16 fixed inset-0 w-full z-6 border-white border-b">
 
             {/* Логотип */}
             <div

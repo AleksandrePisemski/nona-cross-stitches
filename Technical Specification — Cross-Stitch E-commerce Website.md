@@ -11,7 +11,7 @@ The website must also include an administration area where the store owner can m
 
 ---
 
-# 2. Main Website Sections
+# 2. Main Website Sections +
 
 The website should include the following public pages:
 
@@ -59,13 +59,13 @@ On mobile devices, navigation should be displayed through a mobile menu.+
 
 Configurable promotional banner containing:
 
-- Image
-- Heading
-- Description
-- Button
+- Image +
+- Heading +
+- Description + 
+- Button +
 - Link
 
-Administrator must be able to change banner content without editing the source code.
+Administrator must be able to change banner content without editing the source code. -
 
 ---
 
@@ -78,14 +78,14 @@ Each category card should include:
 - Category image
 - Category name
 - Link to category
+ 
+Example categories: +
 
-Example categories:
-
-- Landscapes
-- Flowers
-- Animals
-- Religious
-- People
+- Landscapes 
+- Flowers 
+- Animals 
+- Religious 
+- People 
 - Architecture
 - Children's designs
 - Modern designs

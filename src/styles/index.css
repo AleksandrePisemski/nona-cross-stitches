@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
 @import "tailwindcss";
 @import "Theme.css";
+@import "Animations.css";
 
 
 :root {
@@ -24,5 +25,6 @@ body,
 }
 
 body {
+  background-color: var(--color-button-bg);
   min-height: 100vh;
 }

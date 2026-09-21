@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router'
 import HomePage from './pages/home/HomePage'
-import Catalog from './pages/Catalog'
+import Catalog from './pages/catalog/Catalog'
 
 function AppRoutes() {
   return (

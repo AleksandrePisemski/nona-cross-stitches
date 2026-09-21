@@ -17,6 +17,7 @@
   --color-accent: var(--color-stitching-rust);
   --color-PrimaryText: var(--color-stitching-graphite);
   --font-header: 'Syne', sans-serif;
-
+  --color-button-bg: var(--color-stitching-navy);
+  --color-button-hero: var(--color-stitching-floss);
 
 }
