@@ -14,6 +14,7 @@
   
 
   --color-page: var(--color-stitching-linen);
+  --color-section: var(--color-stitching-floss);
   --color-accent: var(--color-stitching-rust);
   --color-PrimaryText: var(--color-stitching-graphite);
   --font-header: 'Syne', sans-serif;

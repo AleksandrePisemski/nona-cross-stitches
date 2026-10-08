@@ -7,7 +7,7 @@ import {
     MagnifyingGlassIcon,
     ShoppingBagIcon
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
     const linkStyle = ({ isActive }) =>
@@ -102,6 +102,20 @@ function NavBar() {
     const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
     const [searchIsOpen, setSearchIsOpen] = useState(false);
     const [shoppingBagIsOpen, setShoppingBagIsOpen] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
+
+    useEffect(() => {
+        let previousScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            setIsHidden(currentScrollY > previousScrollY && currentScrollY > 64);
+            previousScrollY = currentScrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const toggleShoppingBag = () => {
         setShoppingBagIsOpen(!shoppingBagIsOpen);
@@ -122,7 +136,7 @@ function NavBar() {
         }`;
 
     return (
-        <nav className="navbar flex items-center justify-between p-4 pl-0 text-white h-16 fixed inset-0 w-full z-6 border-white border-b">
+        <nav className={`navbar flex items-center justify-between p-4 pl-0 text-white h-16 fixed inset-0 w-full z-6 border-white border-b bg-stitching-wood transition-transform duration-300 ${isHidden ? "-translate-y-full" : "translate-y-0"}`}>
 
             {/* Логотип */}
             <div
@@ -225,4 +239,6 @@ function NavBar() {
 }
 
 export default NavBar;
+
+
 
