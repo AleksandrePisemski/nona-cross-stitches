@@ -29,3 +29,10 @@
 .fadeOut {
     animation: fadeOut 0.5s ease-in-out forwards;
 }
+
+
+
+
+.category-carousel .swiper-wrapper {
+  transition-timing-function: linear !important;
+}

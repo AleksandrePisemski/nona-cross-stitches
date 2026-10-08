@@ -71,7 +71,7 @@ Administrator must be able to change banner content without editing the source c
 
 ### 3.3 Categories
 
-Display main product categories.
+Display main product categories. +
 
 Each category card should include:
 
@@ -90,11 +90,11 @@ Example categories: +
 - Children's designs
 - Modern designs
 
-Categories must be manageable from the administration panel.
+Categories must be manageable from the administration panel. 
 
 ---
 
-### 3.4 Featured Products
+### 3.4 Featured Products 
 
 Sections may include:
 
@@ -120,7 +120,7 @@ Optional:
 
 ---
 
-### 3.5 Promotional Sections
+### 3.5 Promotional Sections -
 
 Administrator should be able to create promotional blocks such as:
 

@@ -8,7 +8,8 @@ import heroImage from '../../assets/hero-section-bg.png'
 function HeroSection() {
     return (
         <section className="flex flex-col h-screen ">
-            <img src={heroImage} alt="Hero Section Background" className="absolute inset-0 w-full h-full object-cover z-1 blur-[3px] md:bg-transparent " />
+            <div className="overlay z-1 w-full h-full absolute top-0 left-0 bg-linear-to-t from-stitching-rose via-stitching-wood to-stitching-rose opacity-70" />
+            <img src={heroImage} alt="Hero Section Background" className="absolute inset-0 w-full h-full object-cover z-1 blur-[3px] md:bg-transparent opacity-63" />
             <div className="flex flex-col pt-40 p-10 rounded-md relative h-screen fadeIn z-2 items-center md:items-start md:pl-30 md:gap-10">
                 <div className="flex flex-col gap-5 z-3 ">
                     <div className="flex flex-col md:flex-row md:gap-5 md:items-end z-3 items-center ">
@@ -24,10 +25,10 @@ function HeroSection() {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-5 mt-6 z-3 w-full justify-center items-center md:w-1/3 ">
-                    <button className="bg-button-hero text-black rounded-[25px] px-4 py-2 w-2/3 h-[55px]  z-3 font-bold text-[20px]">
+                    <button className="bg-button-hero text-black rounded-[25px] px-4 py-2 w-2/3 h-[55px]  z-3 font-bold text-[20px] hover:scale-110 ">
                         See About Us
                     </button>
-                    <button className=" bg-button-bg text-white rounded-[25px] px-4 py-2 w-2/3  h-[55px]  z-3 font-bold text-[20px]">
+                    <button className=" bg-button-bg text-white rounded-[25px] px-4 py-2 w-2/3  h-[55px]  z-3 font-bold text-[20px] hover:scale-110">
                         Explore Catalog
                     </button>
                 </div>
