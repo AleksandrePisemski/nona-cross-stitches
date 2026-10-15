@@ -1,5 +1,6 @@
 import './styles/App.css'
 import AppRoutes from './AppRoute'
+import { CartProvider } from './context/CartContext.jsx'
 
 
 
@@ -7,9 +8,11 @@ import AppRoutes from './AppRoute'
 
 function App() {
   return (
-    <main className="app" aria-label="Blank page">
-      <AppRoutes/>
-    </main>
+    <CartProvider>
+      <main className="app" aria-label="Blank page">
+        <AppRoutes/>
+      </main>
+    </CartProvider>
   );
 }
 

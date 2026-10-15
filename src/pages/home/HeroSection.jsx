@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router';
 import heroImage from '../../assets/hero-section-bg.png'
 
 
@@ -28,9 +29,9 @@ function HeroSection() {
                     <button className="bg-button-hero text-black rounded-[25px] px-4 py-2 w-2/3 h-[55px]  z-3 font-bold text-[20px] hover:scale-110 ">
                         See About Us
                     </button>
-                    <button className=" bg-button-bg text-white rounded-[25px] px-4 py-2 w-2/3  h-[55px]  z-3 font-bold text-[20px] hover:scale-110">
-                        Explore Catalog
-                    </button>
+                    <NavLink to="/catalog" className="flex items-center justify-center text-center bg-button-bg text-white rounded-[25px] px-4 py-2 w-2/3  h-[55px]  z-3 font-bold text-[20px] hover:scale-110">
+                            Explore Catalog
+                    </NavLink>
                 </div>
             </div>
         </section>

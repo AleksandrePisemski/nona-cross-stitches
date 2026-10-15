@@ -8,6 +8,7 @@ import {
     ShoppingBagIcon
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import { useCart } from "../../context/CartContext.jsx";
 
 function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
     const linkStyle = ({ isActive }) =>
@@ -80,7 +81,7 @@ function MobileSearchBar({ searchIsOpen }) {
     );
 }
 
-function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag }) {
+function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items }) {
     return (
         <div
             className={`md:w-[30vw] fixed top-0 right-0 w-screen h-screen bg-gray-800/80 backdrop-blur-xs z-51 flex flex-col text-3xl p-6 justify-center items-center gap-10 transition-all duration-700 ease-in-out ${shoppingBagIsOpen
@@ -93,12 +94,24 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag }) {
                 onClick={toggleShoppingBag}
             />
 
-            <h2>BAG IS EMPTY</h2>
+            <h2>{items.length === 0 ? "BAG IS EMPTY" : "YOUR BAG"}</h2>
+            {items.length > 0 && (
+                <ul className="w-full max-w-md space-y-4 text-base">
+                    {items.map((item) => (
+                        <li key={item.id} className="flex items-center justify-between gap-4 border-b border-white/30 pb-3">
+                            <span>{item.name}</span>
+                            <span>Qty: {item.quantity}</span>
+                            <span>{item.price}</span>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
 
 function NavBar() {
+    const { items } = useCart();
     const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
     const [searchIsOpen, setSearchIsOpen] = useState(false);
     const [shoppingBagIsOpen, setShoppingBagIsOpen] = useState(false);
@@ -142,12 +155,15 @@ function NavBar() {
             <div
                 id="logo"
                 className="w-25 h-25 flex items-center justify-center shrink-0"
-            >
+                
+            ><NavLink to="/home">
                 <img
+                
                     src={Logo}
                     alt="Cross-Stitch Logo"
                     className="w-full h-full object-contain"
                 />
+            </NavLink>
             </div>
 
             <p className="text-white text-md hidden md:block">
@@ -233,6 +249,7 @@ function NavBar() {
             <ShoppingBag
                 shoppingBagIsOpen={shoppingBagIsOpen}
                 toggleShoppingBag={toggleShoppingBag}
+                items={items}
             />
         </nav>
     );
