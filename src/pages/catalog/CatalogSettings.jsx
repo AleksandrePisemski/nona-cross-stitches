@@ -21,7 +21,7 @@ const defaultState = {
 
 const sortOptions = [
   { value: "newest", label: "Newest" },
-  { value: "name-ascending", label: "A�Z" },
+  { value: "name-ascending", label: "A - Z" },
   { value: "price-ascending", label: "Price: low to high" },
   { value: "price-descending", label: "Price: high to low" },
 ]
@@ -51,11 +51,13 @@ export default function CatalogSettings({ applied, onApply, onReset, resultCount
 
   function applyPending() {
     onApply(pending)
+    setIsOpen(false)
   }
 
   function resetFilters() {
     setPending(defaultState)
     onReset()
+    setIsOpen(false)
   }
 
   const activeFilterCount = countSelectedFilters(applied)
@@ -155,7 +157,7 @@ export default function CatalogSettings({ applied, onApply, onReset, resultCount
               <p className="text-base text-muted-foreground" aria-live="polite">
                 Show {resultCount} {resultCount === 1 ? "result" : "results"}
               </p>
-              <div className="flex gap-2 sm:justify-end">
+              <div className="flex gap-2  justify-end">
                 <Button type="button" variant="outline" size="lg" className="text-base" onClick={resetFilters}>
                   Reset
                 </Button>

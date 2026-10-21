@@ -33,6 +33,71 @@
 
 
 
-.category-carousel .swiper-wrapper {
-  transition-timing-function: linear !important;
+.category-carousel__track {
+  display: flex;
+  width: max-content;
+  animation: category-carousel-scroll 60s linear infinite;
+  will-change: transform;
+}
+
+.category-carousel__group {
+  display: flex;
+  flex: none;
+  gap: 20px;
+  padding-right: 20px;
+}
+
+.category-carousel__card {
+  flex: none;
+  width: 200px;
+  aspect-ratio: 2 / 3;
+}
+
+@keyframes category-carousel-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (min-width: 640px) {
+  .category-carousel__group {
+    gap: 24px;
+    padding-right: 24px;
+  }
+
+  .category-carousel__card {
+    width: 230px;
+  }
+}
+
+@media (min-width: 768px) {
+  .category-carousel__group {
+    gap: 40px;
+    padding-right: 40px;
+  }
+
+  .category-carousel__card {
+    width: 260px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-carousel__group {
+    gap: 56px;
+    padding-right: 56px;
+  }
+
+  .category-carousel__card {
+    width: 280px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-carousel__track {
+    animation: none;
+  }
 }

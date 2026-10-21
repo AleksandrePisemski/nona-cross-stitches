@@ -19,7 +19,7 @@ export default function ItemUI({ products }) {
       ) : (
         <ItemGroup className="grid grid-cols-2 gap-4 pt-0 sm:grid-cols-3 sm:gap-5">
           {products.map((product) => (
-            <Item key={product.id} variant="outline" className="relative bg-white/80 pb-14 shadow-sm">
+            <Item key={product.id} variant="outline" className="relative bg-white/80 pb-4 shadow-sm">
               <ItemHeader>
                 <img
                   src={product.image}
@@ -33,16 +33,21 @@ export default function ItemUI({ products }) {
               <ItemContent>
                 <ItemTitle>{product.name}</ItemTitle>
                 <ItemDescription>{product.description}</ItemDescription>
-              </ItemContent>
+                <div className='flex justify-between'>
+                <p className="mt-1 font-semibold text-stitching-wood">{product.price}</p>
               <button
                 type="button"
                 aria-label={`Add ${product.name} to bag`}
                 title="Add to bag"
                 onClick={() => addToCart(product)}
-                className="absolute bottom-3 right-3 rounded-full bg-stitching-wood p-2 text-white transition-colors hover:bg-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-wood"
+                className=" rounded-full bg-stitching-wood p-2 text-white transition-colors hover:bg-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-wood"
               >
                 <ShoppingBagIcon className="size-5" aria-hidden="true" />
               </button>
+              </div>
+              </ItemContent>
+              
+          
             </Item>
           ))}
         </ItemGroup>
