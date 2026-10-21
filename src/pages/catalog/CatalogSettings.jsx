@@ -20,17 +20,19 @@ const defaultState = {
 }
 
 const sortOptions = [
+  { value: "featured", label: "Featured" },
   { value: "newest", label: "Newest" },
-  { value: "name-ascending", label: "A - Z" },
-  { value: "price-ascending", label: "Price: low to high" },
-  { value: "price-descending", label: "Price: high to low" },
+  { value: "price-ascending", label: "Price: Low to High" },
+  { value: "price-descending", label: "Price: High to Low" },
+  { value: "popularity", label: "Popularity" },
+  { value: "discount", label: "Discount" },
 ]
 
 function countSelectedFilters(state) {
   return state.categories.length + state.sizes.length + state.prices.length
 }
 
-export default function CatalogSettings({ applied, onApply, onReset, resultCount }) {
+export default function CatalogSettings({ applied, onApply, onReset, resultCount, onSortChange }) {
   const [isOpen, setIsOpen] = useState(false)
   const [pending, setPending] = useState(applied)
 
@@ -88,7 +90,10 @@ export default function CatalogSettings({ applied, onApply, onReset, resultCount
                 <legend className="text-lg font-semibold">Sort</legend>
                 <RadioGroup
                   value={pending.sortBy}
-                  onValueChange={(sortBy) => setPending((current) => ({ ...current, sortBy }))}
+                  onValueChange={(sortBy) => {
+                    setPending((current) => ({ ...current, sortBy }))
+                    onSortChange(sortBy)
+                  }}
                   aria-label="Sort products"
                   className="grid gap-3 sm:grid-cols-2"
                 >

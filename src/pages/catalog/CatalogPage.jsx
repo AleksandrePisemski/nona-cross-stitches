@@ -35,13 +35,18 @@ function Catalog() {
 
     return filtered.sort((first, second) => {
       switch (applied.sortBy) {
+        case "featured":
+          return (second.featuredRank ?? 0) - (first.featuredRank ?? 0)
         case "newest":
           return new Date(second.createdAt) - new Date(first.createdAt)
         case "price-ascending":
           return getNumericPrice(first.price) - getNumericPrice(second.price)
         case "price-descending":
           return getNumericPrice(second.price) - getNumericPrice(first.price)
-        case "name-ascending":
+        case "popularity":
+          return (second.popularity ?? 0) - (first.popularity ?? 0)
+        case "discount":
+          return (second.discountPercent ?? 0) - (first.discountPercent ?? 0)
         default:
           return first.name.localeCompare(second.name)
       }
@@ -60,6 +65,7 @@ function Catalog() {
             onApply={setApplied}
             onReset={() => setApplied(defaultCatalogState)}
             resultCount={visibleProducts.length}
+            onSortChange={(sortBy) => setApplied((current) => ({ ...current, sortBy }))}
           />
           <ItemUI products={visibleProducts} />
         </section>

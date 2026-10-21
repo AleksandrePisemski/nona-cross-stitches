@@ -4,6 +4,7 @@ const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState([])
+  const [wishlist, setWishlist] = useState([])
 
   const addToCart = (product) => {
     setItems((currentItems) => {
@@ -17,7 +18,26 @@ export function CartProvider({ children }) {
     })
   }
 
-  const value = useMemo(() => ({ items, addToCart }), [items])
+  const removeFromCart = (productId) => {
+    setItems((currentItems) => currentItems.filter((item) => item.id !== productId))
+  }
+
+  const toggleWishlist = (product) => {
+    setWishlist((current) =>
+      current.some((item) => item.id === product.id)
+        ? current.filter((item) => item.id !== product.id)
+        : [...current, product]
+    )
+  }
+
+  const removeFromWishlist = (productId) => {
+    setWishlist((current) => current.filter((item) => item.id !== productId))
+  }
+
+  const value = useMemo(
+    () => ({ items, addToCart, removeFromCart, wishlist, toggleWishlist, removeFromWishlist }),
+    [items, wishlist],
+  )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

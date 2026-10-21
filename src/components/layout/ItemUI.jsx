@@ -7,49 +7,66 @@ import {
   ItemTitle,
 } from "../ui/item"
 import { ShoppingBagIcon } from "@heroicons/react/24/outline"
+import { Heart } from "lucide-react"
 import { useCart } from "../../context/CartContext.jsx"
 
 // Keep the existing product cards while allowing the catalog page to control the list.
 export default function ItemUI({ products }) {
-  const { addToCart } = useCart()
+  const { addToCart, wishlist, toggleWishlist } = useCart()
+
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-8">
       {products.length === 0 ? (
         <p className="py-16 text-center text-lg text-muted-foreground">No products match</p>
       ) : (
         <ItemGroup className="grid grid-cols-2 gap-4 pt-0 sm:grid-cols-3 sm:gap-5">
-          {products.map((product) => (
-            <Item key={product.id} variant="outline" className="relative bg-white/80 pb-4 shadow-sm">
-              <ItemHeader>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  width={128}
-                  height={128}
-                  loading="lazy"
-                  className="aspect-square w-full rounded-sm object-cover"
-                />
-              </ItemHeader>
-              <ItemContent>
-                <ItemTitle>{product.name}</ItemTitle>
-                <ItemDescription>{product.description}</ItemDescription>
-                <div className='flex justify-between'>
-                <p className="mt-1 font-semibold text-stitching-wood">{product.price}</p>
-              <button
-                type="button"
-                aria-label={`Add ${product.name} to bag`}
-                title="Add to bag"
-                onClick={() => addToCart(product)}
-                className=" rounded-full bg-stitching-wood p-2 text-white transition-colors hover:bg-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-wood"
-              >
-                <ShoppingBagIcon className="size-5" aria-hidden="true" />
-              </button>
-              </div>
-              </ItemContent>
-              
-          
-            </Item>
-          ))}
+          {products.map((product) => {
+            const isFavorite = wishlist.some((item) => item.id === product.id)
+
+            return (
+              <Item key={product.id} variant="outline" className="relative bg-white/80 pb-4 shadow-sm">
+                <ItemHeader className="relative">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    width={128}
+                    height={128}
+                    loading="lazy"
+                    className="aspect-square w-full rounded-sm object-cover"
+                  />
+                  <button
+                    type="button"
+                    aria-label={isFavorite ? `Remove ${product.name} from favorites` : `Add ${product.name} to favorites`}
+                    aria-pressed={isFavorite}
+                    title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                    onClick={() => toggleWishlist(product)}
+                    className="absolute right-2 top-2 inline-flex size-9 items-center justify-center rounded-full bg-white/90 text-stitching-wood shadow-sm transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-wood"
+                  >
+                    <Heart
+                      className={`size-5 transition-all duration-300 ease-out active:scale-110 motion-reduce:transition-none ${isFavorite ? "fill-stitching-rose text-stitching-rose" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                </ItemHeader>
+                <ItemContent>
+                  <ItemTitle>{product.name}</ItemTitle>
+                  <ItemDescription>{product.description}</ItemDescription>
+                  <div className="flex justify-between">
+                    <p className="mt-1 font-semibold text-stitching-wood">{product.price}</p>
+                    <button
+                      type="button"
+                      aria-label={`Add ${product.name} to bag`}
+                      title="Add to bag"
+                      onClick={() => addToCart(product)}
+                      className="rounded-full bg-stitching-wood p-2 text-white transition-colors hover:bg-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-wood"
+                    >
+                      <ShoppingBagIcon className="size-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </ItemContent>
+              </Item>
+            )
+          })}
         </ItemGroup>
       )}
     </div>
