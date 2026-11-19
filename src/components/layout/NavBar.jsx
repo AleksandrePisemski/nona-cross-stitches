@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, Minus, Trash2 } from "lucide-react";
 import { useCart } from "../../context/CartContext.jsx";
 
 
@@ -122,7 +122,7 @@ function MobileSearchBar({ searchIsOpen }) {
     );
 }
 
-function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCart }) {
+function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCart, decrementCart, clearCart }) {
     const totalPrice = items.reduce((total, item) => {
         const price = Number(String(item.price).replace(/[^\d.-]/g, "")) || 0;
         return total + price * (item.quantity ?? 1);
@@ -141,21 +141,35 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCa
 
             <h2>{items.length === 0 ? "BAG IS EMPTY" : "YOUR BAG"}</h2>
             {items.length > 0 && (
+                <>
                 <ul className="max-h-[calc(100dvh-12rem)] min-h-0 w-full max-w-md space-y-4 overflow-y-auto overscroll-contain text-base">
                     {items.map((item) => (
                         <li key={item.id} className="flex items-center justify-between gap-4 border-b border-white/30 pb-3">
-                            <span>{item.name}</span>
-                            <span>Qty: {item.quantity}</span>
-                            <span>{item.price}</span>
-                            <button
-                                type="button"
-                                aria-label={`Remove ${item.name} from cart`}
-                                title="Remove from cart"
-                                onClick={() => removeFromCart(item.id)}
-                                className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                            >
-                                <Trash2 className="size-5" aria-hidden="true" />
-                            </button>
+                            <div className="min-w-0 flex-1">
+                                <p className="truncate">{item.name}</p>
+                                <p className="text-sm text-white/75">{item.price}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    aria-label={`Decrease ${item.name} quantity`}
+                                    title="Decrease quantity"
+                                    onClick={() => decrementCart(item.id)}
+                                    className="inline-flex size-8 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                >
+                                    <Minus className="size-4" aria-hidden="true" />
+                                </button>
+                                <span className="min-w-12 text-center">Qty: {item.quantity ?? 1}</span>
+                                <button
+                                    type="button"
+                                    aria-label={`Remove ${item.name} from cart`}
+                                    title="Remove item"
+                                    onClick={() => removeFromCart(item.id)}
+                                    className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                >
+                                    <Trash2 className="size-5" aria-hidden="true" />
+                                </button>
+                            </div>
                         </li>
                     ))}
                     <li className="flex justify-between border-t border-white/30 pt-3 font-semibold">
@@ -163,12 +177,14 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCa
                         <span>{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(totalPrice)}</span>
                     </li>
                 </ul>
+                <button type="button" onClick={clearCart} className="rounded-md border border-white/50 px-4 py-2 text-sm font-semibold transition-colors hover:bg-white/10">Clear All</button>
+                </>
             )}
         </div>
     );
 }
 
-function WishlistSheet({ isOpen, onClose, items, removeFromWishlist }) {
+function WishlistSheet({ isOpen, onClose, items, removeFromWishlist, clearWishlist, onAddToCart }) {
     return (
         <div
             className={`md:w-[30vw] fixed top-0 right-0 w-screen h-[100dvh] bg-gray-800/80 backdrop-blur-xs z-51 flex flex-col text-white text-3xl p-6 justify-center items-center gap-10 transition-all duration-700 ease-in-out ${isOpen
@@ -187,6 +203,7 @@ function WishlistSheet({ isOpen, onClose, items, removeFromWishlist }) {
 
             <h2>{items.length === 0 ? "WISHLIST IS EMPTY" : "YOUR WISHLIST"}</h2>
             {items.length > 0 && (
+                <>
                 <ul className="max-h-[calc(100dvh-12rem)] min-h-0 w-full max-w-md space-y-4 overflow-y-auto overscroll-contain text-base">
                     {items.map((item) => (
                         <li key={item.id} className="flex items-center justify-between gap-4 border-b border-white/30 pb-3">
@@ -200,25 +217,38 @@ function WishlistSheet({ isOpen, onClose, items, removeFromWishlist }) {
                                 <p className="text-sm text-white/80">{item.price}</p>
                                 {item.description && <p className="line-clamp-2 text-sm text-white/70">{item.description}</p>}
                             </div>
-                            <button
-                                type="button"
-                                aria-label={`Remove ${item.name} from wishlist`}
-                                title="Remove from wishlist"
-                                onClick={() => removeFromWishlist(item.id)}
-                                className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                            >
-                                <Trash2 className="size-5" aria-hidden="true" />
-                            </button>
+                            <div className="flex shrink-0 items-center gap-1">
+                                <button
+                                    type="button"
+                                    aria-label={`Move ${item.name} to cart`}
+                                    title="Move to cart"
+                                    onClick={() => onAddToCart(item)}
+                                    className="inline-flex size-9 items-center justify-center rounded-md bg-white text-gray-900 transition-colors hover:bg-white/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                >
+                                    <ShoppingBagIcon className="size-5" aria-hidden="true" />
+                                </button>
+                                <button
+                                    type="button"
+                                    aria-label={`Remove ${item.name} from wishlist`}
+                                    title="Remove from wishlist"
+                                    onClick={() => removeFromWishlist(item.id)}
+                                    className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                >
+                                    <Trash2 className="size-5" aria-hidden="true" />
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
+                <button type="button" onClick={clearWishlist} className="rounded-md border border-white/50 px-4 py-2 text-sm font-semibold transition-colors hover:bg-white/10">Clear All</button>
+                </>
             )}
         </div>
     );
 }
 
 function NavBar() {
-    const { items, removeFromCart, wishlist, removeFromWishlist } = useCart();
+    const { items, addToCart, removeFromCart, decrementCart, clearCart, wishlist, removeFromWishlist, clearWishlist } = useCart();
     const cartCount = items.reduce((total, item) => total + (item.quantity ?? 1), 0);
     const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
     const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -423,12 +453,19 @@ function NavBar() {
                     toggleShoppingBag={toggleShoppingBag}
                     items={items}
                     removeFromCart={removeFromCart}
+                    decrementCart={decrementCart}
+                    clearCart={clearCart}
                 />
                 <WishlistSheet
                     isOpen={wishlistIsOpen}
                     onClose={() => setWishlistIsOpen(false)}
                     items={wishlist}
                     removeFromWishlist={removeFromWishlist}
+                    clearWishlist={clearWishlist}
+                    onAddToCart={(product) => {
+                        addToCart(product)
+                        removeFromWishlist(product.id)
+                    }}
                 />
             </>,
             document.body,
@@ -438,3 +475,4 @@ function NavBar() {
 }
 
 export default NavBar;
+

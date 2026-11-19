@@ -179,7 +179,7 @@ Cross-Stitch Pictures
 
 ---
 
-# 6. Product Filtering
+# 6. Product Filtering +
 
 Catalog must support filtering.
 
@@ -223,7 +223,7 @@ User should be able to reset all filters.
 
 ---
 
-# 7. Sorting
+# 7. Sorting +
 
 Products should be sortable by:
 
@@ -236,7 +236,7 @@ Products should be sortable by:
 
 ---
 
-# 8. Search
+# 8. Search --
 
 Website should include product search.
 
@@ -253,7 +253,7 @@ If no results are found, display an appropriate message and recommended products
 
 ---
 
-# 9. Product Page
+# 9. Product Page --
 
 Each product should have a dedicated page.
 
@@ -280,7 +280,7 @@ Functionality:
 - Zoom or enlarged image
 - Mobile swipe support
 
-### Cross-stitch specifications
+### Cross-stitch specifications --
 
 The product database should support fields such as:
 
@@ -350,7 +350,7 @@ Examples:
 
 ---
 
-# 12. Shopping Cart
+# 12. Shopping Cart ++ 
 
 Users must be able to:
 
