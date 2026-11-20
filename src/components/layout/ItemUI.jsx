@@ -6,6 +6,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from "../ui/item"
+import { Link } from "react-router"
 import { ShoppingBagIcon } from "@heroicons/react/24/outline"
 import { Heart } from "lucide-react"
 import { useCart } from "../../context/CartContext.jsx"
@@ -26,14 +27,13 @@ export default function ItemUI({ products }) {
             return (
               <Item key={product.id} variant="outline" className="relative bg-white/80 pb-4 shadow-sm">
                 <ItemHeader className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    width={128}
-                    height={128}
-                    loading="lazy"
-                    className="aspect-square w-full rounded-sm object-cover"
-                  />
+                  <Link to={`/product/${product.slug ?? product.id}`} className="block w-full">
+                    {(product.images?.[0] ?? product.image) ? (
+                      <img src={product.images?.[0] ?? product.image} alt={product.name} loading="lazy" className="aspect-square w-full rounded-sm object-cover" />
+                    ) : (
+                      <div className="flex aspect-square w-full items-center justify-center rounded-sm bg-muted text-xs text-muted-foreground">Image coming soon</div>
+                    )}
+                  </Link>
                   <button
                     type="button"
                     aria-label={isFavorite ? `Remove ${product.name} from favorites` : `Add ${product.name} to favorites`}
@@ -49,10 +49,10 @@ export default function ItemUI({ products }) {
                   </button>
                 </ItemHeader>
                 <ItemContent>
-                  <ItemTitle>{product.name}</ItemTitle>
-                  <ItemDescription>{product.description}</ItemDescription>
+                  <Link to={`/product/${product.slug ?? product.id}`} className="w-fit"><ItemTitle>{product.name}</ItemTitle></Link>
+                  {product.description && <ItemDescription>{product.description}</ItemDescription>}
                   <div className="flex justify-between">
-                    <p className="mt-1 font-semibold text-stitching-wood">{product.price}</p>
+                    {product.price != null && <p className="mt-1 font-semibold text-stitching-wood">{product.price}{product.currency ? ` ${product.currency}` : ""}</p>}
                     <button
                       type="button"
                       aria-label={`Add ${product.name} to bag`}

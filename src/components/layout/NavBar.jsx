@@ -5,11 +5,14 @@ import {
     Bars3Icon,
     XMarkIcon,
     MagnifyingGlassIcon,
-    ShoppingBagIcon
+    ShoppingBagIcon,
+    PlusIcon,
+    MinusIcon,
+    TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Heart, Minus, Trash2 } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext.jsx";
 
 
@@ -122,11 +125,10 @@ function MobileSearchBar({ searchIsOpen }) {
     );
 }
 
-function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCart, decrementCart, clearCart }) {
-    const totalPrice = items.reduce((total, item) => {
-        const price = Number(String(item.price).replace(/[^\d.-]/g, "")) || 0;
-        return total + price * (item.quantity ?? 1);
-    }, 0);
+function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, removeFromCart, decrementCart, clearCart }) {
+    const { applyPromoCode, promoCode, subtotal, discount, deliveryCost, total } = useCart();
+    const [promoInput, setPromoInput] = useState("");
+    const [promoMessage, setPromoMessage] = useState("");
     return (
         <div
             className={`md:w-[30vw] fixed top-0 right-0 w-screen h-[100dvh] bg-gray-800/80 backdrop-blur-xs z-51 flex flex-col text-white text-3xl p-6 justify-center items-center gap-10 transition-all duration-700 ease-in-out ${shoppingBagIsOpen
@@ -139,44 +141,57 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, removeFromCa
                 onClick={toggleShoppingBag}
             />
 
-            <h2>{items.length === 0 ? "BAG IS EMPTY" : "YOUR BAG"}</h2>
+            <h2>{items.length === 0 ? "Your bag is empty" : "YOUR BAG"}</h2>
+            {items.length === 0 && <p className="text-base text-white/75">Browse the catalog to find a design you love.</p>}
             {items.length > 0 && (
                 <>
                 <ul className="max-h-[calc(100dvh-12rem)] min-h-0 w-full max-w-md space-y-4 overflow-y-auto overscroll-contain text-base">
                     {items.map((item) => (
-                        <li key={item.id} className="flex items-center justify-between gap-4 border-b border-white/30 pb-3">
+                        <li key={item.productId ?? item.id} className="flex items-center justify-between gap-4 border-b border-white/30 pb-3">
+                            {item.image && <img src={item.image} alt={item.name ?? ""} className="size-14 shrink-0 rounded object-cover" />}
                             <div className="min-w-0 flex-1">
-                                <p className="truncate">{item.name}</p>
-                                <p className="text-sm text-white/75">{item.price}</p>
+                                <p className="truncate">{item.name ?? "Product"}</p>
+                                <p className="text-sm text-white/75">{item.price} × {item.quantity} = {(Number(String(item.price ?? "").replace(/[^\d.-]/g, "")) * item.quantity).toFixed(2)}{item.currency ? ` ${item.currency}` : ""}</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <button
                                     type="button"
                                     aria-label={`Decrease ${item.name} quantity`}
                                     title="Decrease quantity"
-                                    onClick={() => decrementCart(item.id)}
+                                    onClick={() => decrementCart(item.productId ?? item.id)}
                                     className="inline-flex size-8 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >
-                                    <Minus className="size-4" aria-hidden="true" />
+                                    <MinusIcon className="size-4" aria-hidden="true" />
+                                </button>
+                                <button type="button" aria-label={`Increase ${item.name ?? "product"} quantity`} onClick={() => addToCart(item)} className="inline-flex size-8 items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10">
+                                    <PlusIcon className="size-4" aria-hidden="true" />
                                 </button>
                                 <span className="min-w-12 text-center">Qty: {item.quantity ?? 1}</span>
                                 <button
                                     type="button"
                                     aria-label={`Remove ${item.name} from cart`}
                                     title="Remove item"
-                                    onClick={() => removeFromCart(item.id)}
+                                    onClick={() => removeFromCart(item.productId ?? item.id)}
                                     className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >
-                                    <Trash2 className="size-5" aria-hidden="true" />
+                                    <TrashIcon className="size-5" aria-hidden="true" />
                                 </button>
                             </div>
                         </li>
                     ))}
-                    <li className="flex justify-between border-t border-white/30 pt-3 font-semibold">
-                        <span>Total</span>
-                        <span>{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(totalPrice)}</span>
-                    </li>
                 </ul>
+                <form onSubmit={(event) => { event.preventDefault(); const result = applyPromoCode(promoInput); setPromoMessage(result.ok ? "Promo code applied." : result.message); }} className="flex gap-2 text-sm">
+                    <input aria-label="Promo code" value={promoInput} onChange={(event) => setPromoInput(event.target.value)} placeholder="Promo code (STITCH10)" className="min-w-0 flex-1 rounded border border-white/40 bg-transparent px-3 py-2" />
+                    <button type="submit" className="rounded border border-white/40 px-3">Apply</button>
+                </form>
+                {promoMessage && <p role="status" className="text-xs text-white/75">{promoMessage}</p>}
+                <dl className="w-full space-y-2 border-t border-white/30 pt-3 text-base">
+                    <div className="flex justify-between"><dt>Subtotal</dt><dd>{subtotal.toFixed(2)} GEL</dd></div>
+                    {discount > 0 && <div className="flex justify-between"><dt>Discount ({promoCode})</dt><dd>−{discount.toFixed(2)} GEL</dd></div>}
+                    <div className="flex justify-between"><dt>Delivery</dt><dd>{deliveryCost.toFixed(2)} GEL</dd></div>
+                    <div className="flex justify-between border-t border-white/30 pt-2 font-semibold"><dt>Total</dt><dd>{total.toFixed(2)} GEL</dd></div>
+                </dl>
+                {/* TODO: Add product variations when a variants schema is defined. */}
                 <button type="button" onClick={clearCart} className="rounded-md border border-white/50 px-4 py-2 text-sm font-semibold transition-colors hover:bg-white/10">Clear All</button>
                 </>
             )}
@@ -234,7 +249,7 @@ function WishlistSheet({ isOpen, onClose, items, removeFromWishlist, clearWishli
                                     onClick={() => removeFromWishlist(item.id)}
                                     className="shrink-0 rounded-full p-2 text-white transition-colors hover:text-stitching-rose focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 >
-                                    <Trash2 className="size-5" aria-hidden="true" />
+                                    <TrashIcon className="size-5" aria-hidden="true" />
                                 </button>
                             </div>
                         </li>
@@ -452,6 +467,7 @@ function NavBar() {
                     shoppingBagIsOpen={shoppingBagIsOpen}
                     toggleShoppingBag={toggleShoppingBag}
                     items={items}
+                    addToCart={addToCart}
                     removeFromCart={removeFromCart}
                     decrementCart={decrementCart}
                     clearCart={clearCart}
