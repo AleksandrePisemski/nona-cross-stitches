@@ -15,6 +15,10 @@ import { createPortal } from "react-dom";
 import { Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext.jsx";
 
+function formatLari(value) {
+    const amount = Number(String(value ?? "").replace(/[^\d.-]/g, "")) || 0;
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: "GEL" }).format(amount);
+}
 
 let bodyScrollLockCount = 0
 let previousBodyScrollStyles = null
@@ -102,6 +106,13 @@ function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
             >
                 Contact
             </NavLink>
+            <NavLink
+                to="/delivery-payment"
+                className={linkStyle}
+                onClick={toggleBurgerMenu}
+            >
+                Delivery &amp; Payment
+            </NavLink>
         </div>
     );
 }
@@ -126,7 +137,7 @@ function MobileSearchBar({ searchIsOpen }) {
 }
 
 function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, removeFromCart, decrementCart, clearCart }) {
-    const { applyPromoCode, promoCode, subtotal, discount, deliveryCost, total } = useCart();
+    const { applyPromoCode, promoCode, subtotal, discount, total } = useCart();
     const [promoInput, setPromoInput] = useState("");
     const [promoMessage, setPromoMessage] = useState("");
     return (
@@ -151,7 +162,7 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, r
                             {item.image && <img src={item.image} alt={item.name ?? ""} className="size-14 shrink-0 rounded object-cover" />}
                             <div className="min-w-0 flex-1">
                                 <p className="truncate">{item.name ?? "Product"}</p>
-                                <p className="text-sm text-white/75">{item.price} × {item.quantity} = {(Number(String(item.price ?? "").replace(/[^\d.-]/g, "")) * item.quantity).toFixed(2)}{item.currency ? ` ${item.currency}` : ""}</p>
+                                <p className="text-sm text-white/75">{formatLari(item.price)} × {item.quantity} = {formatLari(Number(String(item.price ?? "").replace(/[^\d.-]/g, "")) * item.quantity)}</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <button
@@ -186,11 +197,18 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, r
                 </form>
                 {promoMessage && <p role="status" className="text-xs text-white/75">{promoMessage}</p>}
                 <dl className="w-full space-y-2 border-t border-white/30 pt-3 text-base">
-                    <div className="flex justify-between"><dt>Subtotal</dt><dd>{subtotal.toFixed(2)} GEL</dd></div>
-                    {discount > 0 && <div className="flex justify-between"><dt>Discount ({promoCode})</dt><dd>−{discount.toFixed(2)} GEL</dd></div>}
-                    <div className="flex justify-between"><dt>Delivery</dt><dd>{deliveryCost.toFixed(2)} GEL</dd></div>
-                    <div className="flex justify-between border-t border-white/30 pt-2 font-semibold"><dt>Total</dt><dd>{total.toFixed(2)} GEL</dd></div>
+                    <div className="flex justify-between"><dt>Subtotal</dt><dd>{formatLari(subtotal)}</dd></div>
+                    {discount > 0 && <div className="flex justify-between"><dt>Discount ({promoCode})</dt><dd>−{formatLari(discount)}</dd></div>}
+                    <div className="flex justify-between"><dt>Delivery</dt><dd>Calculated at checkout</dd></div>
+                    <div className="flex justify-between border-t border-white/30 pt-2 font-semibold"><dt>Items total</dt><dd>{formatLari(total)}</dd></div>
                 </dl>
+                <NavLink
+                    to="/checkout"
+                    onClick={toggleShoppingBag}
+                    className="w-full rounded-md bg-white px-4 py-3 text-center text-base font-semibold text-stitching-graphite transition-colors hover:bg-stitching-linen"
+                >
+                    Continue to checkout
+                </NavLink>
                 {/* TODO: Add product variations when a variants schema is defined. */}
                 <button type="button" onClick={clearCart} className="rounded-md border border-white/50 px-4 py-2 text-sm font-semibold transition-colors hover:bg-white/10">Clear All</button>
                 </>
@@ -229,7 +247,7 @@ function WishlistSheet({ isOpen, onClose, items, removeFromWishlist, clearWishli
                             />
                             <div className="min-w-0 flex-1">
                                 <p className="truncate">{item.name}</p>
-                                <p className="text-sm text-white/80">{item.price}</p>
+                                <p className="text-sm text-white/80">{formatLari(item.price)}</p>
                                 {item.description && <p className="line-clamp-2 text-sm text-white/70">{item.description}</p>}
                             </div>
                             <div className="flex shrink-0 items-center gap-1">
@@ -372,6 +390,9 @@ function NavBar() {
 
                 <NavLink to="/contact" className={desktopLinkStyle}>
                     Contact
+                </NavLink>
+                <NavLink to="/delivery-payment" className={desktopLinkStyle}>
+                    Delivery &amp; Payment
                 </NavLink>
             </div>
 

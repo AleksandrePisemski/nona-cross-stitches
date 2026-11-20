@@ -77,7 +77,7 @@ export function CartProvider({ children }) {
           (item.productId ?? item.id) === productId ? { ...item, quantity: (item.quantity ?? 1) + 1 } : item
         )
       }
-      return [...currentItems, { productId, name: product.name, price: product.price, currency: product.currency, image: product.image ?? product.images?.[0], quantity: 1 }]
+      return [...currentItems, { productId, name: product.name, price: Number(String(product.price ?? "").replace(/[^\d.-]/g, "")) || 0, currency: "GEL", image: product.image ?? product.images?.[0], quantity: 1 }]
     })
   }
 
@@ -115,8 +115,8 @@ export function CartProvider({ children }) {
     return sum + price * (item.quantity ?? 1)
   }, 0)
   const discount = promoCode === "STITCH10" ? subtotal * 0.1 : 0
-  // Placeholder flat fee; move to admin configuration or a delivery API later.
-  const deliveryCost = items.length > 0 ? 7 : 0
+  // The delivery fee depends on the destination, which is collected at checkout.
+  const deliveryCost = 0
   const total = Math.max(0, subtotal - discount) + deliveryCost
 
   const toggleWishlist = (product) => {

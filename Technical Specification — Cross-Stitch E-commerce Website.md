@@ -393,12 +393,12 @@ Minimum order: 100 GEL
 
 ---
 
-# 14. Checkout
+# 14. Checkout++
 
 Checkout should allow users to purchase without mandatory registration.
 
 Required customer information:
-
+ 
 - First name
 - Last name
 - Phone number
@@ -418,7 +418,7 @@ Optional:
 
 ---
 
-# 15. Delivery
+# 15. Delivery++
 
 System should support multiple delivery methods.
 
