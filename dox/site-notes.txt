@@ -1,0 +1,16 @@
+﻿
+SITE OVERVIEW
+Nona’s Cross-Stitches is a React single-page e-commerce site built with Vite, React Router, and Tailwind CSS. Theme colors and typography are defined in src/styles/Theme.css. Main code lives in src/pages, src/components, and src/context.
+
+HOW THE SITE WORKS
+The router is configured in src/AppRoute.jsx. The home page links to a product catalog, product details, and checkout. Catalog products and category filters are in src/pages/catalog/catalogData.js. Cart state is shared through src/context/CartContext.jsx. Delivery and payment options are shared by checkout, order confirmation, and the Delivery & Payment page. The global footer is in src/components/layout/Footer.jsx; Checkout keeps a minimal layout without the footer.
+
+UPDATE LOG — 2026-11-21
+- Added a responsive footer with desktop navigation columns, mobile accordion groups, contact actions, social and Messenger links, payment badges, copyright year, and a back-to-top button.
+- Registered footer destinations for About, Contact, FAQ, Terms, Privacy, Returns, Stores, Careers, and Installment/Financing. Category links open the catalog with the selected category filter.
+- Added concise delivery and payment summaries sourced from the existing shared checkout definitions.
+- Added immediate scroll-to-top behavior when the route or catalog category changes, so footer navigation opens at the top of its destination.
+- Support phone, email, social URLs, and some policy copy are placeholders that need real store details and approved text before launch.
+- Updated the home hero buttons: hover colors replace the previous scale effect; the catalog button uses a lighter navy hover with dark text to avoid color flicker.
+
+- Removed Delivery & Payment from the desktop and mobile NavBar menus; its footer link and standalone page remain available.

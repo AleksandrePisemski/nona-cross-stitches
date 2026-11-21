@@ -106,13 +106,6 @@ function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
             >
                 Contact
             </NavLink>
-            <NavLink
-                to="/delivery-payment"
-                className={linkStyle}
-                onClick={toggleBurgerMenu}
-            >
-                Delivery &amp; Payment
-            </NavLink>
         </div>
     );
 }
@@ -390,9 +383,6 @@ function NavBar() {
 
                 <NavLink to="/contact" className={desktopLinkStyle}>
                     Contact
-                </NavLink>
-                <NavLink to="/delivery-payment" className={desktopLinkStyle}>
-                    Delivery &amp; Payment
                 </NavLink>
             </div>
 
