@@ -3,15 +3,12 @@ import { Link } from "react-router"
 import {
   ArrowUpIcon,
   ChevronDownIcon,
-  ChatBubbleLeftRightIcon,
   CreditCardIcon,
   EnvelopeIcon,
   MapPinIcon,
   PhoneIcon,
-  ShareIcon,
   TruckIcon,
 } from "@heroicons/react/24/outline"
-import { CameraIcon } from "@heroicons/react/24/solid"
 import { Accordion } from "../../components/ui/accordion"
 import { Button } from "../../components/ui/button"
 import { Separator } from "../../components/ui/separator"
@@ -73,6 +70,27 @@ function SocialLink({ href, label, children }) {
   return <a href={href} aria-label={label} target="_blank" rel="noreferrer" className="inline-flex size-10 items-center justify-center rounded-full border border-stitching-wood/70 text-stitching-graphite transition-colors hover:border-stitching-rust hover:bg-stitching-rust hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stitching-rust">{children}</a>
 }
 
+function FacebookIcon() {
+  return <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true" fill="currentColor">
+    <path d="M13.4 21v-8.2h2.75l.41-3.2H13.4V7.56c0-.93.26-1.56 1.59-1.56h1.7V3.14C16.4 3.05 15.39 3 14.2 3c-2.5 0-4.2 1.53-4.2 4.34V9.6H7.2v3.2H10V21h3.4Z" />
+  </svg>
+}
+
+function InstagramIcon() {
+  return <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+    <circle cx="12" cy="12" r="4.1" />
+    <circle cx="17.65" cy="6.55" r="1" fill="currentColor" stroke="none" />
+  </svg>
+}
+
+function MessengerIcon() {
+  return <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
+    <path d="M12 3.25c-5.05 0-8.75 3.62-8.75 8.42 0 2.55 1.1 4.72 3.03 6.18v3.1l3.02-1.66c.86.24 1.77.37 2.7.37 5.05 0 8.75-3.62 8.75-8.42S17.05 3.25 12 3.25Z" />
+    <path d="m7.45 13.67 3.17-3.36 2.52 1.94 3.41-1.94-3.17 3.36-2.52-1.94-3.41 1.94Z" fill="currentColor" stroke="none" />
+  </svg>
+}
+
 function FooterContact() {
   return <section aria-labelledby="footer-contact-title" className="space-y-4">
     <h2 id="footer-contact-title" className="font-header text-lg font-semibold">Contact & support</h2>
@@ -84,9 +102,9 @@ function FooterContact() {
     </div>
     <Button render={<Link to="/contact" />} className="bg-stitching-navy text-white transition-colors hover:bg-stitching-rust">Contact us</Button>
     <div className="flex gap-2 pt-1">
-      <SocialLink href={support.facebook} label="Visit our Facebook page"><ShareIcon className="size-5" aria-hidden="true" /></SocialLink>
-      <SocialLink href={support.instagram} label="Visit our Instagram page"><CameraIcon className="size-5" aria-hidden="true" /></SocialLink>
-      <SocialLink href={support.messenger} label="Message us on Messenger"><ChatBubbleLeftRightIcon className="size-5" aria-hidden="true" /></SocialLink>
+      <SocialLink href={support.facebook} label="Visit our Facebook page"><FacebookIcon /></SocialLink>
+      <SocialLink href={support.instagram} label="Visit our Instagram page"><InstagramIcon /></SocialLink>
+      <SocialLink href={support.messenger} label="Message us on Messenger"><MessengerIcon /></SocialLink>
     </div>
   </section>
 }

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext.jsx";
+import ProductSearchBox from "../search/ProductSearchBox.jsx";
 
 function formatLari(value) {
     const amount = Number(String(value ?? "").replace(/[^\d.-]/g, "")) || 0;
@@ -111,22 +112,25 @@ function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
 }
 
 // Мобильный поиск
-function MobileSearchBar({ searchIsOpen }) {
+function MobileSearchOverlay({ onClose }) {
+    useEffect(() => {
+        return acquireBodyScrollLock()
+    }, [])
+
     return (
-        <div
-            className={`flex md:hidden flex-1 mx-2 overflow-hidden transition-all duration-700 ease-in-out ${searchIsOpen
-                    ? "max-w-full opacity-100 translate-x-0"
-                    : "max-w-0 opacity-0 -translate-x-10 pointer-events-none"
-                }`}
-        >
-            <input
-                type="text"
-                placeholder="Search..."
-                className="w-full backdrop-blur-md border-white border text-white px-3 py-1.5 rounded-md outline-none text-base"
-                autoFocus={searchIsOpen}
-            />
+        <div className="fixed inset-0 z-[80] overflow-y-auto bg-white text-stone-900 md:hidden" role="dialog" aria-modal="true" aria-label="Search products">
+            <div className="sticky top-0 z-10 border-b border-white/20 bg-stitching-wood px-4 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] text-white shadow-sm">
+                <div className="mb-3 flex items-center justify-between">
+                    <p className="text-base font-semibold">Search products</p>
+                    <button type="button" onClick={onClose} aria-label="Close search" className="inline-flex size-11 items-center justify-center rounded-full hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white">
+                        <XMarkIcon className="size-6" aria-hidden="true" />
+                    </button>
+                </div>
+                <ProductSearchBox mobile isOpen onClose={onClose} />
+            </div>
+            <p className="px-4 py-5 text-sm text-stone-500">Search by product name, SKU, or description.</p>
         </div>
-    );
+    )
 }
 
 function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, removeFromCart, decrementCart, clearCart }) {
@@ -281,6 +285,7 @@ function NavBar() {
     const [shoppingBagIsOpen, setShoppingBagIsOpen] = useState(false);
     const [wishlistIsOpen, setWishlistIsOpen] = useState(false);
     const [isHidden, setIsHidden] = useState(false);
+    const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 767px)").matches);
 
     useEffect(() => {
         let previousScrollY = window.scrollY;
@@ -294,6 +299,12 @@ function NavBar() {
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 767px)")
+        const updateViewport = (event) => setIsMobileViewport(event.matches)
+        mediaQuery.addEventListener("change", updateViewport)
+        return () => mediaQuery.removeEventListener("change", updateViewport)
+    }, [])
     useEffect(() => {
         const hasOpenOverlay = burgerMenuIsOpen || shoppingBagIsOpen || wishlistIsOpen
         if (!hasOpenOverlay) return undefined
@@ -365,7 +376,6 @@ function NavBar() {
             </p>
 
             {/* Мобильный поиск */}
-            <MobileSearchBar searchIsOpen={searchIsOpen} />
 
             {/* Ссылки по центру для ПК */}
             <div className="hidden md:flex items-center gap-8 mx-auto text-base font-medium shrink-0 pr-30">
@@ -394,27 +404,11 @@ function NavBar() {
                     <div
                         className={`hidden md:block absolute right-full top-1/2 z-20 mr-3 w-40 -translate-y-1/2 transition-opacity duration-300 lg:w-48 ${searchIsOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
                     >
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            aria-label="Search"
-                            aria-hidden={!searchIsOpen}
-                            tabIndex={searchIsOpen ? 0 : -1}
-                            className="w-full rounded-md border border-white px-4 py-2 text-sm text-white outline-none backdrop-blur-md"
-                            autoFocus={searchIsOpen}
-                        />
+                        {searchIsOpen && <ProductSearchBox isOpen={searchIsOpen} onClose={() => setSearchIsOpen(false)} />}
                     </div>
-                    {searchIsOpen ? (
-                        <XMarkIcon
-                            className="w-8 h-8 navbar-link cursor-pointer z-10"
-                            onClick={toggleSearch}
-                    />
-                    ) : (
-                        <MagnifyingGlassIcon
-                            className="w-8 h-8 navbar-link cursor-pointer z-10"
-                            onClick={toggleSearch}
-                    />
-                    )}
+                    <button type="button" aria-label={searchIsOpen ? "Close product search" : "Search products"} onClick={toggleSearch} className="navbar-link inline-flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                        {searchIsOpen ? <XMarkIcon className="size-7" aria-hidden="true" /> : <MagnifyingGlassIcon className="size-7" aria-hidden="true" />}
+                    </button>
                 </div>
 
                 <span className="relative inline-flex">
@@ -494,6 +488,10 @@ function NavBar() {
                         removeFromWishlist(product.id)
                     }}
                 />
+                {searchIsOpen && isMobileViewport && createPortal(
+                    <MobileSearchOverlay onClose={() => setSearchIsOpen(false)} />,
+                    document.body,
+                )}
             </>,
             document.body,
         )}

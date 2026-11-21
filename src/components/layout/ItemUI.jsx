@@ -27,7 +27,7 @@ export default function ItemUI({ products }) {
             return (
               <Item key={product.id} variant="outline" className="relative bg-white/80 pb-4 shadow-sm">
                 <ItemHeader className="relative">
-                  <Link to={`/product/${product.slug ?? product.id}`} className="block w-full">
+                  <Link to={`/products/${product.slug ?? product.id}`} className="block w-full">
                     {(product.images?.[0] ?? product.image) ? (
                       <img src={product.images?.[0] ?? product.image} alt={product.name} loading="lazy" className="aspect-square w-full rounded-sm object-cover" />
                     ) : (
@@ -49,7 +49,7 @@ export default function ItemUI({ products }) {
                   </button>
                 </ItemHeader>
                 <ItemContent>
-                  <Link to={`/product/${product.slug ?? product.id}`} className="w-fit"><ItemTitle>{product.name}</ItemTitle></Link>
+                  <Link to={`/products/${product.slug ?? product.id}`} className="w-fit"><ItemTitle>{product.name}</ItemTitle></Link>
                   {product.description && <ItemDescription>{product.description}</ItemDescription>}
                   <div className="flex justify-between">
                     {product.price != null && <p className="mt-1 font-semibold text-stitching-wood">{product.price}{product.currency ? ` ${product.currency}` : ""}</p>}

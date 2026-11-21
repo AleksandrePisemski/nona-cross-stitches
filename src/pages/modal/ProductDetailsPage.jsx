@@ -23,7 +23,7 @@ export default function ProductDetailsPage() {
         <ProductGallery images={product.images ?? (product.image ? [product.image] : [])} alt={product.name} />
         <section className="space-y-4">
           <h1 className="text-3xl font-semibold">{product.name}</h1>
-          {product.sku && <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>}
+          <p className="text-sm text-muted-foreground">SKU: {product.sku ?? product.articleNumber ?? product.id}</p>
           {product.price != null && <p className="text-xl">{product.price}{product.currency ? ` ${product.currency}` : ""}</p>}
           {product.availability && <p>{product.availability.replaceAll("_", " ")}</p>}
           <Button onClick={() => addToCart(product)} disabled={product.availability === "out_of_stock"}>Add to Cart</Button>

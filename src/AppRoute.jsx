@@ -14,13 +14,15 @@ import ReturnsRefundPolicy from './pages/legal/ReturnsRefundPolicy.jsx'
 import Stores from './pages/Stores.jsx'
 import Careers from './pages/Careers.jsx'
 import InstallmentFinancing from './pages/InstallmentFinancing.jsx'
+import SearchResults from './pages/SearchResults.jsx'
 
 function AppRoutes() {
   return <Routes>
     <Route path="/" element={<HomePage />} />
     <Route path="/home" element={<HomePage />} />
     <Route path="/catalog" element={<Catalog />} />
-    <Route path="/product/:slug" element={<ProductDetailsPage />} />
+    <Route path="/search" element={<SearchResults />} />
+    <Route path="/products/:slug" element={<ProductDetailsPage />} />
     <Route path="/checkout" element={<Checkout />} />
     <Route path="/order-confirmation" element={<OrderConfirmation />} />
     <Route path="/delivery-payment" element={<DeliveryAndPayment />} />
