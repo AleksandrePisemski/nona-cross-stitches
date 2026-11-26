@@ -15,7 +15,7 @@ function AppContent() {
 
   return <div className="app">
     <AppRoutes />
-    {pathname !== "/checkout" && <Footer />}
+    {!pathname.startsWith("/admin") && pathname !== "/checkout" && <Footer />}
   </div>
 }
 

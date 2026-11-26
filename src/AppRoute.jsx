@@ -16,9 +16,11 @@ import Careers from './pages/Careers.jsx'
 import InstallmentFinancing from './pages/InstallmentFinancing.jsx'
 import SearchResults from './pages/SearchResults.jsx'
 import CustomerAccount from './pages/CustomerAccount.jsx'
+import AdminApp from './admin/AdminApp.jsx'
 
 function AppRoutes() {
   return <Routes>
+    <Route path="/admin/*" element={<AdminApp />} />
     <Route path="/" element={<HomePage />} />
     <Route path="/home" element={<HomePage />} />
     <Route path="/catalog" element={<Catalog />} />
