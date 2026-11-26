@@ -11,7 +11,7 @@ The website must also include an administration area where the store owner can m
 
 ---
 
-# 2. Main Website Sections +
+# 2. Main Website Sections 
 
 The website should include the following public pages:
 
@@ -42,11 +42,11 @@ The home page should contain:
 
 Header should include:
 
-- Company logo +
-- Main navigation menu +
-- Catalog button/link +
-- Search +
-- Shopping cart icon +
+- Company logo 
+- Main navigation menu 
+- Catalog button/link 
+- Search 
+- Shopping cart icon 
 - Number of products currently in the cart (later)
 
 Header should work correctly on desktop, tablet, and mobile devices.
@@ -59,10 +59,10 @@ On mobile devices, navigation should be displayed through a mobile menu.+
 
 Configurable promotional banner containing:
 
-- Image +
-- Heading +
-- Description + 
-- Button +
+- Image 
+- Heading 
+- Description +
+- Button 
 - Link
 
 Administrator must be able to change banner content without editing the source code. -
@@ -71,7 +71,7 @@ Administrator must be able to change banner content without editing the source c
 
 ### 3.3 Categories
 
-Display main product categories. +
+Display main product categories. 
 
 Each category card should include:
 
@@ -79,7 +79,7 @@ Each category card should include:
 - Category name
 - Link to category
  
-Example categories: +
+Example categories: 
 
 - Landscapes 
 - Flowers 
@@ -120,7 +120,7 @@ Optional:
 
 ---
 
-### 3.5 Promotional Sections -
+### 3.5 Promotional Sections 
 
 Administrator should be able to create promotional blocks such as:
 
@@ -179,7 +179,7 @@ Cross-Stitch Pictures
 
 ---
 
-# 6. Product Filtering +
+# 6. Product Filtering 
 
 Catalog must support filtering.
 
@@ -223,7 +223,7 @@ User should be able to reset all filters.
 
 ---
 
-# 7. Sorting +
+# 7. Sorting 
 
 Products should be sortable by:
 
@@ -236,7 +236,7 @@ Products should be sortable by:
 
 ---
 
-# 8. Search --
+# 8. Search 
 
 Website should include product search.
 
@@ -253,7 +253,7 @@ If no results are found, display an appropriate message and recommended products
 
 ---
 
-# 9. Product Page --
+# 9. Product Page 
 
 Each product should have a dedicated page.
 

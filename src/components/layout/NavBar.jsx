@@ -159,7 +159,7 @@ function ShoppingBag({ shoppingBagIsOpen, toggleShoppingBag, items, addToCart, r
                             {item.image && <img src={item.image} alt={item.name ?? ""} className="size-14 shrink-0 rounded object-cover" />}
                             <div className="min-w-0 flex-1">
                                 <p className="truncate">{item.name ?? "Product"}</p>
-                                <p className="text-sm text-white/75">{formatLari(item.price)} × {item.quantity} = {formatLari(Number(String(item.price ?? "").replace(/[^\d.-]/g, "")) * item.quantity)}</p>
+                                <p className="text-sm text-white/75">{formatLari(item.price)}</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <button
