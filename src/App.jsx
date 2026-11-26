@@ -4,6 +4,7 @@ import { useLocation } from 'react-router'
 import AppRoutes from './AppRoute'
 import Footer from './components/layout/Footer.jsx'
 import { CartProvider } from './context/CartContext.jsx'
+import { CustomerAccountProvider } from './context/CustomerAccountContext.jsx'
 
 function AppContent() {
   const { pathname, search } = useLocation()
@@ -19,7 +20,7 @@ function AppContent() {
 }
 
 function App() {
-  return <CartProvider><AppContent /></CartProvider>
+  return <CustomerAccountProvider><CartProvider><AppContent /></CartProvider></CustomerAccountProvider>
 }
 
 export default App

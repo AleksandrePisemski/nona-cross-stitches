@@ -15,6 +15,7 @@ import Stores from './pages/Stores.jsx'
 import Careers from './pages/Careers.jsx'
 import InstallmentFinancing from './pages/InstallmentFinancing.jsx'
 import SearchResults from './pages/SearchResults.jsx'
+import CustomerAccount from './pages/CustomerAccount.jsx'
 
 function AppRoutes() {
   return <Routes>
@@ -25,6 +26,8 @@ function AppRoutes() {
     <Route path="/products/:slug" element={<ProductDetailsPage />} />
     <Route path="/checkout" element={<Checkout />} />
     <Route path="/order-confirmation" element={<OrderConfirmation />} />
+    <Route path="/account" element={<CustomerAccount />} />
+    <Route path="/account/orders/:orderRef" element={<CustomerAccount />} />
     <Route path="/delivery-payment" element={<DeliveryAndPayment />} />
     <Route path="/about" element={<AboutUs />} />
     <Route path="/contact" element={<Contact />} />

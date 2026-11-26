@@ -26,9 +26,9 @@ function HeroSection() {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-5 mt-6 z-3 w-full justify-center items-center md:w-1/3 ">
-                    <button className="bg-button-hero text-black rounded-[25px] px-4 py-2 w-2/3 h-[55px] z-3 font-bold text-[20px] hover:bg-[#C98268] hover:text-white ">
+                    <NavLink to="/about" className="flex items-center justify-center text-center bg-button-hero text-black rounded-[25px] px-4 py-2 w-2/3 h-[55px] z-3 font-bold text-[20px] hover:bg-[#C98268] hover:text-white ">
                         See About Us
-                    </button>
+                    </NavLink>
                     <NavLink to="/catalog" className="flex items-center justify-center text-center bg-button-bg text-white rounded-[25px] px-4 py-2 w-2/3 h-[55px] z-3 font-bold text-[20px] hover:bg-[#AAB8C8] hover:text-[#1F2937]">
                             Explore Catalog
                     </NavLink>

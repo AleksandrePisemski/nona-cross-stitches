@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Separator } from "../components/ui/separator"
 import { DELIVERY_METHODS, PAYMENT_METHODS } from "./DeliveryAndPayment.jsx"
 import { createIdempotencyKey, paymentProviders } from "../lib/paymentProviders.js"
+import { useCustomerAccount } from "../context/CustomerAccountContext.jsx"
 
 const LAST_ORDER_KEY = "lastOrder"
 const WEBHOOK_EVENTS = [
@@ -37,6 +38,7 @@ function money(value) {
 
 export default function OrderConfirmation() {
   const { state } = useLocation()
+  const { saveOrder } = useCustomerAccount()
   const [order, setOrder] = useState(() => state?.orderRef ? state : readSavedOrder())
   const [simulatorOpen, setSimulatorOpen] = useState(false)
   const [lastWebhook, setLastWebhook] = useState(() => state?.lastWebhookEvent ?? readSavedOrder()?.lastWebhookEvent ?? null)
@@ -45,6 +47,7 @@ export default function OrderConfirmation() {
 
   function persistOrder(nextOrder) {
     setOrder(nextOrder)
+    saveOrder(nextOrder)
     try {
       localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(nextOrder))
     } catch {

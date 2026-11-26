@@ -14,3 +14,7 @@ UPDATE LOG — 2026-11-21
 - Updated the home hero buttons: hover colors replace the previous scale effect; the catalog button uses a lighter navy hover with dark text to avoid color flicker.
 
 - Removed Delivery & Payment from the desktop and mobile NavBar menus; its footer link and standalone page remain available.
+
+UPDATE LOG — 2026-11-26
+- Added a text account link immediately after Contact in desktop navigation. It reads “Log In” when signed out and “Profile” when signed in; removed the desktop user icon.
+- Updated the mobile burger-menu account link to read “Log in” when signed out and “Profile” when signed in.

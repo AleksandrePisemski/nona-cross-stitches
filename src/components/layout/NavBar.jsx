@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 import { Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext.jsx";
 import ProductSearchBox from "../search/ProductSearchBox.jsx";
+import { useCustomerAccount } from "../../context/CustomerAccountContext.jsx";
 
 function formatLari(value) {
     const amount = Number(String(value ?? "").replace(/[^\d.-]/g, "")) || 0;
@@ -60,6 +61,7 @@ function acquireBodyScrollLock() {
     }
 }
 function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
+    const { currentUser } = useCustomerAccount();
     const linkStyle = ({ isActive }) =>
         `navbar-link relative pb-1 transition-colors ${isActive ? "border-b-2 border-white" : "hover:text-gray-300"
         }`;
@@ -106,6 +108,9 @@ function BurgerMenu({ toggleBurgerMenu, burgerMenuIsOpen }) {
                 onClick={toggleBurgerMenu}
             >
                 Contact
+            </NavLink>
+            <NavLink to="/account" className={linkStyle} onClick={toggleBurgerMenu}>
+                {currentUser ? "Profile" : "Log in"}
             </NavLink>
         </div>
     );
@@ -279,6 +284,7 @@ function WishlistSheet({ isOpen, onClose, items, removeFromWishlist, clearWishli
 
 function NavBar() {
     const { items, addToCart, removeFromCart, decrementCart, clearCart, wishlist, removeFromWishlist, clearWishlist } = useCart();
+    const { currentUser } = useCustomerAccount();
     const cartCount = items.reduce((total, item) => total + (item.quantity ?? 1), 0);
     const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
     const [searchIsOpen, setSearchIsOpen] = useState(false);
@@ -393,6 +399,9 @@ function NavBar() {
 
                 <NavLink to="/contact" className={desktopLinkStyle}>
                     Contact
+                </NavLink>
+                <NavLink to="/account" className={desktopLinkStyle}>
+                    {currentUser ? "Profile" : "Log In"}
                 </NavLink>
             </div>
 

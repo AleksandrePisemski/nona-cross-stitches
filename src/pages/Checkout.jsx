@@ -8,6 +8,7 @@ import { createIdempotencyKey, paymentProviders } from "../lib/paymentProviders.
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Separator } from "../components/ui/separator"
+import { useCustomerAccount } from "../context/CustomerAccountContext.jsx"
 
 const initialForm = {
   firstName: "", lastName: "", phone: "", email: "", country: "", city: "",
@@ -45,6 +46,23 @@ function numericPrice(price) {
   return Number(String(price ?? "").replace(/[^\d.-]/g, "")) || 0
 }
 
+function createInitialForm(user, draft) {
+  const profile = user?.profile ?? {}
+  const address = user?.addresses?.find((saved) => saved.isDefault) ?? user?.addresses?.[0]
+  const [addressFirstName = "", ...addressLastNames] = String(address?.fullName ?? "").split(" ")
+  const form = { ...initialForm, ...(draft?.form ?? {}) }
+  form.firstName ||= profile.firstName || addressFirstName
+  form.lastName ||= profile.lastName || addressLastNames.join(" ")
+  form.email ||= profile.email || user?.email || ""
+  form.phone ||= profile.phone || address?.phone || ""
+  form.country ||= address?.country ?? ""
+  form.city ||= address?.city ?? ""
+  form.address ||= address?.address ?? ""
+  form.postalCode ||= address?.postalCode ?? ""
+  form.apartment ||= address?.apartment ?? ""
+  return form
+}
+
 function Field({ name, label, value, onChange, error, required = false, type = "text", autoComplete, placeholder }) {
   const errorId = `${name}-error`
   return <div>
@@ -57,8 +75,10 @@ function Field({ name, label, value, onChange, error, required = false, type = "
 export default function Checkout() {
   const navigate = useNavigate()
   const { items, addToCart, decrementCart, removeFromCart } = useCart()
+  const { currentUser, saveOrder } = useCustomerAccount()
   const [draft] = useState(readCheckoutDraft)
-  const [form, setForm] = useState(() => ({ ...initialForm, ...(draft?.form ?? {}) }))
+  const [form, setForm] = useState(() => createInitialForm(currentUser, draft))
+  const [selectedAddressId, setSelectedAddressId] = useState(() => (currentUser?.addresses?.find((address) => address.isDefault) ?? currentUser?.addresses?.[0])?.id ?? "")
   const [errors, setErrors] = useState({})
   const [deliveryMethod, setDeliveryMethod] = useState(
     DELIVERY_METHODS.some((method) => method.value === draft?.deliveryMethod)
@@ -147,6 +167,7 @@ export default function Checkout() {
     setPaymentNotice(null)
     const idempotencyKey = createIdempotencyKey()
     setPendingOrder(order)
+    saveOrder(order)
     try {
       localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
     } catch {
@@ -175,6 +196,7 @@ export default function Checkout() {
         paymentDetails: result.paymentDetails ?? order.paymentDetails ?? null,
       }
       setPendingOrder(updatedOrder)
+      saveOrder(updatedOrder)
       try {
         localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(updatedOrder))
         if (successful || result.status === "Pending") {
@@ -208,6 +230,7 @@ export default function Checkout() {
         ],
       }
       setPendingOrder(failedOrder)
+      saveOrder(failedOrder)
       try {
         localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(failedOrder))
       } catch {
@@ -248,8 +271,27 @@ export default function Checkout() {
       processedWebhookIds: [],
       createdAt: new Date().toISOString(),
     }
+    saveOrder(order)
     if (!pendingOrder) console.log("Order created:", order)
     await payOrder(order, paymentMethod)
+  }
+
+  function selectSavedAddress(event) {
+    const address = currentUser?.addresses?.find((saved) => saved.id === event.target.value)
+    setSelectedAddressId(event.target.value)
+    if (!address) return
+    const [firstName = "", ...lastNames] = String(address.fullName ?? "").split(" ")
+    setForm((current) => ({
+      ...current,
+      firstName: firstName || currentUser.profile.firstName || "",
+      lastName: lastNames.join(" ") || currentUser.profile.lastName || "",
+      phone: address.phone || currentUser.profile.phone || "",
+      country: address.country ?? "",
+      city: address.city ?? "",
+      address: address.address ?? "",
+      postalCode: address.postalCode ?? "",
+      apartment: address.apartment ?? "",
+    }))
   }
 
   return <PageWrapper>
@@ -260,6 +302,7 @@ export default function Checkout() {
         <h1 className="mt-2 font-header text-3xl font-semibold sm:text-4xl">Checkout</h1>
         <p className="mt-2 text-sm text-PrimaryText/70">Guest checkout · No account needed</p>
       </header>
+      {currentUser && currentUser.addresses.length > 0 && <div className="mb-6 max-w-xl rounded-xl border border-stitching-wood/50 bg-page p-4"><label htmlFor="savedAddress" className="text-sm font-semibold">Use a saved address</label><select id="savedAddress" value={selectedAddressId} onChange={selectSavedAddress} className={inputClass}><option value="">Enter a different address</option>{currentUser.addresses.map((address) => <option key={address.id} value={address.id}>{address.label}{address.isDefault ? " (default)" : ""} — {address.city}, {address.address}</option>)}</select></div>}
       <form onSubmit={submitOrder} noValidate className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="space-y-6">
           <Card className="bg-page"><CardHeader><CardTitle className="font-header text-xl">Delivery method</CardTitle></CardHeader><CardContent>
